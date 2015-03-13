@@ -235,6 +235,24 @@ Now we'd like to parse a JSON Array of users
 ]
 ```
 
+Simply, we're gonna create an array and fill it.
+
+```swift
+var data:NSData?
+/// ... get your data here
+// once you have your data, simply do
+var users:[User] = []
+var decoder = JSONDecoder(data!)
+if let array = decoder.array {
+    for element in array {
+        users.append(User(element))
+    }
+}
+
+// Here you have an User array completely filled in just a few lines of code
+
+```
+
 ---
 
 
