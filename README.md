@@ -107,23 +107,23 @@ First here is some example JSON we have to parse.
 
 We want to translate that JSON to these Swift objects:
 
-(Consider not to use optional variables as they might not be rendered correctly)
+(Consider using objc types such as NSNumber, NSString as Swift optionals bridged types may not be rendered correctly)
 
 ```swift
 class Address:JSONSerializable {
-    var objID: NSNumber = 0
-    var streetAddress: NSString = ""
-    var city: NSString = ""
-    var state: NSString = ""
-    var postalCode: NSString = ""
+    var objID: NSNumber?
+    var streetAddress: NSString?
+    var city: NSString?
+    var state: NSString?
+    var postalCode: NSString?
 
 }
 
 class User:JSONSerializable {
-    var objID: NSNumber = 0
-    var firstName: NSString = ""
-    var lastName: NSString = ""
-    var age: NSNumber = 0
+    var objID: NSNumber?
+    var firstName: NSString?
+    var lastName: NSString?
+    var age: NSNumber?
     var address = Address()
 
 }
@@ -138,11 +138,11 @@ class Address:JSONSerializable {
     
     class func fromJSON(decoder:JSONDecoder) -> Address {
         var object = Address()
-        object.objID = decoder["id"].integer!
-        object.streetAddress = decoder["street_address"].string!
-        object.city = decoder["city"].string!
-        object.state = decoder["state"].string!
-        object.postalCode = decoder["postal_code"].string!
+        object.objID = decoder["id"].integer
+        object.streetAddress = decoder["street_address"].string
+        object.city = decoder["city"].string
+        object.state = decoder["state"].string
+        object.postalCode = decoder["postal_code"].string
         return object
     }
 
@@ -154,10 +154,10 @@ class User:JSONSerializable {
    
    class func fromJSON(decoder:JSONDecoder) -> User {
         var object = User()
-        object.objID = decoder["id"].integer!
-        object.firstName = decoder["first_name"].string!
-        object.lastName = decoder["last_name"].string!
-        object.age = decoder["age"].integer!
+        object.objID = decoder["id"].integer
+        object.firstName = decoder["first_name"].string
+        object.lastName = decoder["last_name"].string
+        object.age = decoder["age"].integer
         object.address = Address.fromJSON(decoder["address"])
         return object
     }
