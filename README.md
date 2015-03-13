@@ -30,9 +30,9 @@ When inherited, this class gives you some useful functions, such as
 > Example :
 > ```swift
 > class Person:JSONSerializable {
->   var name:String = "foo"
->   var age:Int = 42
->   var isAwesome:Bool = true
+>   var name:NSString = "foo"
+>   var age:NSNumber = 42
+>   var isAwesome:NSNumber = true
 > }
 > var me = Person()
 > me.JSONString()
@@ -50,11 +50,11 @@ Let's take a look back at our `Person` class
 
 > ```swift
 > class Person:JSONSerializable {
->   var firstName:String
->   var age:Int
->   var isAwesome:Bool
+>   var firstName:NSString
+>   var age:NSNumber
+>   var isAwesome:NSNumber
 >   
->   init(name:String, age:Int, isAwesome:Bool) {
+>   init(name:NSString, age:NSNumber, isAwesome:NSNumber) {
 >     self.firstName = name
 >     self.age = age
 >     self.isAwesome = isAwesome
@@ -95,7 +95,7 @@ First here is some example JSON we have to parse.
     "last_name": "Smith",
     "age": 25,
     "address": {
-        "id": 1
+        "id": 1,
         "street_address": "2nd Street",
         "city": "Bakersfield",
         "state": "CA",
@@ -111,19 +111,19 @@ We want to translate that JSON to these Swift objects:
 
 ```swift
 class Address:JSONSerializable {
-    var objID: Int = 0
-    var streetAddress: String = ""
-    var city: String = ""
-    var state: String = ""
-    var postalCode: String = ""
+    var objID: NSNumber = 0
+    var streetAddress: NSString = ""
+    var city: NSString = ""
+    var state: NSString = ""
+    var postalCode: NSString = ""
 
 }
 
 class User:JSONSerializable {
-    var objID: Int = 0
-    var firstName: String = ""
-    var lastName: String = ""
-    var age: Int = 0
+    var objID: NSNumber = 0
+    var firstName: NSString = ""
+    var lastName: NSString = ""
+    var age: NSNumber = 0
     var address = Address()
 
 }
