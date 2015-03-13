@@ -44,7 +44,7 @@ Will return a String containing
 The `JSONData()` and `toDictionary()` functions basically do the same, but return object data as NSData or Dictionary
 
 **What should I do if I want to change the JSON output ?**
-For example, if you'd like to change how a field of your class is displayed, you can use the `registerVariable` or `registerVariables` functions.
+For example, if you'd like to change the way a field of your class is displayed, you can use the `registerVariable` or `registerVariables` functions.
 
 Let's take a look back at our `Person` class
 
@@ -196,8 +196,21 @@ This will produce the following output:
 }
 ```
 
+Note that there is also a ```swift class func staticDecode(decoder:JSONDecoder)``` you can implement to create your objects
+
+```swift
+class func staticDecode(decoder: JSONDecoder) -> User {
+        var object = User().decode(decoder)
+        return object
+    }
+    
+    
+// You will no be able to create an object using the following syntax:
+var user = User.staticDecode(JSONDecoder(data!))
+```
+
 ---
 
-Here is a glance at what you'll be able to do with CheatyJSON
+
 
 
