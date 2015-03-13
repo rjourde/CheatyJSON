@@ -197,6 +197,8 @@ This will produce the following output:
 }
 ```
 
+---
+
 Now we'd like to parse a JSON Array of users
 
 ##Example
