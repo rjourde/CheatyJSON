@@ -197,15 +197,20 @@ This will produce the following output:
 ```
 
 There is also a 
+
 ```swift 
 class func staticDecode(decoder:JSONDecoder)
-```you can implement to create your objects.
+```
+
+you can implement to create your objects.
 
 ```swift
+class User ...
 class func staticDecode(decoder: JSONDecoder) -> User {
         var object = User().decode(decoder)
         return object
     }
+}
     
     
 // You will no be able to create an object using the following syntax:
