@@ -217,10 +217,6 @@ public class JSONSerializable : NSObject, JSONJoy {
                     subArray.append(item.toDictionary())
                 }
                 propertiesDictionary.setValue(subArray, forKey: propName)
-            } else if propValue is NSData {
-                propertiesDictionary.setValue((propValue as NSData).base64EncodedStringWithOptions(nil), forKey: propName)
-            } else if propValue is Bool {
-                propertiesDictionary.setValue((propValue as Bool).boolValue, forKey: propName)
             } else {
                 propertiesDictionary.setValue(propValue, forKey: propName)
             }
@@ -239,6 +235,5 @@ public class JSONSerializable : NSObject, JSONJoy {
         return NSString(data: self.JSONData(), encoding: NSUTF8StringEncoding)
     }
 }
-
 
 
