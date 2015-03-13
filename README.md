@@ -30,9 +30,9 @@ toDictionary()
 > Example :
 > ```swift
 > class Person:JSONSerializable {
-> var name:String = "foo"
-> var age:Int = 42
-> var isAwesome:Bool = true
+>   var name:String = "foo"
+>   var age:Int = 42
+>   var isAwesome:Bool = true
 > }
 > var me = Person()
 > me.JSONString()
