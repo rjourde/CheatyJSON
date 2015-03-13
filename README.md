@@ -129,7 +129,7 @@ class User:JSONSerializable {
 }
 ```
 
-To do so, simply implement the `decode(decoder:JSONDecoder)` function.
+To do so, simply implement the `class func fromJSON(decoder:JSONDecoder)` function.
 
 ```swift
 class Address:JSONSerializable {
