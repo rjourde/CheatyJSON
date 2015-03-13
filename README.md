@@ -134,12 +134,13 @@ class Address:JSONSerializable {
     
     ...
     
-    func decode(decoder:JSONDecoder) {
+    func decode(decoder:JSONDecoder) -> Address {
         self.objID = decoder["id"].integer
         self.streetAddress = decoder["street_address"].string
         self.city = decoder["city"].string
         self.state = decoder["state"].string
         self.postalCode = decoder["postal_code"].string
+        return self
     }
 
 }
@@ -148,12 +149,13 @@ class User:JSONSerializable {
    
    ...
    
-   func decode(decoder:JSONDecoder) {
+   func decode(decoder:JSONDecoder) -> User {
         self.objID = decoder["id"].integer
         self.firstName = decoder["first_name"].string
         self.lastName = decoder["last_name"].string
         self.age = decoder["age"].integer
-        self.address.decode(decoder["address"])
+        self.address = self.address.decode(decoder["address"])
+        return self
    }
 
 }
@@ -166,6 +168,27 @@ Now that the decode function has been implemented
 var data:NSData?
 // here you get your data
 
-var person = User().decode(JSONDecoder(data))
+var person = User().decode(JSONDecoder(data!))
 // Now your object is fully created and filled
+// We now want to change some value
+person.firstName = "new name"
+// We want to see our object JSON
+println(person.JSONString())
 ```
+
+This will produce the following output:
+
+```json
+{
+  "objID": 1,
+  "firstName": "new name",
+  "lastName": "Smith",
+  "address": {
+    "objID": 1,
+    "state": "CA",
+    "city": "Bakersfield",
+    "streetAddress": "2nd Street"
+  }
+}
+```
+
