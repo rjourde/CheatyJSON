@@ -41,7 +41,7 @@ Will return a String containing
 > ```json
 > {"name":"foo","age":42,"isAwesome":true}
 
-The `JSONData()` and `toDictionary()` functions basically do the same, but returns object data as NSData or Dictionary
+The `JSONData()` and `toDictionary()` functions basically do the same, but return object data as NSData or Dictionary
 
 **What should I do if I want to change the JSON output ?**
 For example, if you'd like to change how a field of your class is displayed, you can use the `registerVariable` or `registerVariables` functions.
@@ -129,7 +129,7 @@ class User:JSONSerializable {
 }
 ```
 
-To do so, simply implement the `decode(decoder:JSONDecoder)` function
+To do so, simply implement the `decode(decoder:JSONDecoder)` function.
 
 ```swift
 class Address:JSONSerializable {
@@ -163,7 +163,7 @@ class User:JSONSerializable {
 }
 ```
 
-Now that the decode function has been implemented
+Now that the decode function has been implemented:
 
 ```swift
 
