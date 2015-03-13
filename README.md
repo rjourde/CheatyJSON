@@ -172,7 +172,7 @@ var person = User().decode(JSONDecoder(data!))
 // Now your object is fully created and filled
 // We now want to change some value
 person.firstName = "new name"
-// We want to see our object JSON
+// We want to see our object as JSON
 println(person.JSONString())
 ```
 
