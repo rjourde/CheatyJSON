@@ -108,7 +108,7 @@ First here is some example JSON we have to parse.
 We want to translate that JSON to these Swift objects:
 
 ```swift
-class Address::JSONSerializable {
+class Address:JSONSerializable {
     var objID: Int?
     var streetAddress: String?
     var city: String?
@@ -125,4 +125,47 @@ class User:JSONSerializable {
     var address = Address()
 
 }
+```
+
+To do so, simply implement the `decode(decoder:JSONDecoder)` function
+
+```swift
+class Address:JSONSerializable {
+    
+    ...
+    
+    func decode(decoder:JSONDecoder) {
+        self.objID = decoder["id"].integer
+        self.streetAddress = decoder["street_address"].string
+        self.city = decoder["city"].string
+        self.state = decoder["state"].string
+        self.postalCode = decoder["postal_code"].string
+    }
+
+}
+
+class User:JSONSerializable {
+   
+   ...
+   
+   func decode(decoder:JSONDecoder) {
+        self.objID = decoder["id"].integer
+        self.firstName = decoder["first_name"].string
+        self.lastName = decoder["last_name"].string
+        self.age = decoder["age"].integer
+        self.address = Address().decode(decoder["address"])
+   }
+
+}
+```
+
+Now that the decode function has been implemented
+
+```swift
+
+var data:NSData?
+// here you get your data
+
+var person = User().decode(JSONDecoder(data))
+// Now your object is fully created and filled
 ```
