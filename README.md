@@ -199,6 +199,39 @@ This will produce the following output:
 
 Now we'd like to parse a JSON Array of users
 
+##Example
+
+```json
+[
+  {
+    "objID": 1,
+    "firstName": "John",
+    "lastName": "Smith",
+    "age": 25,
+    "address": {
+      "objID": 1,
+      "state": "CA",
+      "city": "Bakersfield",
+      "streetAddress": "2nd Street",
+      "postalCode": "93309"
+    }
+  },
+  {
+    "objID": 2,
+    "firstName": "Tom",
+    "lastName": "Smith",
+    "age": 22,
+    "address": {
+      "objID": 2,
+      "state": "CA",
+      "city": "Bakersfield",
+      "streetAddress": "2nd Street",
+      "postalCode": "93309"
+    }
+  }
+]
+```
+
 ---
 
 
