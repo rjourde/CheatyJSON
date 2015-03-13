@@ -22,6 +22,8 @@ Usage
 
 This framework provides a class named **JSONSerializable** you can inherit from.
 
+When you create your classes, please consider using objc types such as NSNumber (for Bool as well), NSString as Swift optionals bridged types may not be rendered correctly
+
 When inherited, this class gives you some useful functions, such as
 
 `JSONString()`
@@ -109,7 +111,6 @@ First here is some example JSON we have to parse.
 
 We want to translate that JSON to these Swift objects:
 
-(Consider using objc types such as NSNumber, NSString as Swift optionals bridged types may not be rendered correctly)
 
 ```swift
 class Address:JSONSerializable {
