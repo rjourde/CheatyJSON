@@ -196,7 +196,10 @@ This will produce the following output:
 }
 ```
 
-Note that there is also a ```swift class func staticDecode(decoder:JSONDecoder)``` you can implement to create your objects
+There is also a 
+```swift 
+class func staticDecode(decoder:JSONDecoder)
+```you can implement to create your objects.
 
 ```swift
 class func staticDecode(decoder: JSONDecoder) -> User {
