@@ -153,7 +153,7 @@ class User:JSONSerializable {
         self.firstName = decoder["first_name"].string
         self.lastName = decoder["last_name"].string
         self.age = decoder["age"].integer
-        self.address = self.address.decode(decoder["address"])
+        self.address.decode(decoder["address"])
    }
 
 }
