@@ -35,11 +35,11 @@ toDictionary()
 > var isAwesome:Bool = true
 > }
 > var me = Person()
-> me.JSONString()```
+> me.JSONString()
 
 Will return a String containing
 > ```json
-> {"name":"foo","age":42,"isAwesome":true}```
+> {"name":"foo","age":42,"isAwesome":true}
 
 Readme is still under construction ;)
 
