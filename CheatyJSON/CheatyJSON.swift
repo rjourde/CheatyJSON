@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 Alexandre Ronse. All rights reserved.
 //
 
-import Foundation
 
 /// Using JSONDecoder from JSONJoy, all credits goes to https://github.com/daltoniam/JSONJoy-Swift
 @objc public class JSONDecoder {
@@ -37,7 +36,7 @@ import Foundation
         return value as? Float
     }
     ///treat the value as a bool
-    public var bool: Bool {
+    public var boolean: Bool {
         if let str = self.string {
             let lower = str.lowercaseString
             if lower == "true" || lower.toInt() > 0 {
@@ -179,11 +178,12 @@ import Foundation
 
 public class JSONSerializable : NSObject, JSONJoy {
     
-    private var registeredVars:[(String,String)] = []
-    
-    override init() {
+    public override init() {
         super.init()
     }
+    
+    private var registeredVars:[(String,String)] = []
+    
     
     public func registerVariable(variableName:String, JSONName:String) {
         self.registeredVars.append((variableName, JSONName))
@@ -212,7 +212,7 @@ public class JSONSerializable : NSObject, JSONJoy {
                     break
                 }
             }
-
+            
             if propValue is JSONSerializable {
                 propertiesDictionary.setValue((propValue as JSONSerializable).toDictionary(), forKey: propName)
             } else if propValue is Array<JSONSerializable> {
