@@ -159,6 +159,7 @@ class User:JSONSerializable {
         object.lastName = decoder["last_name"].string!
         object.age = decoder["age"].integer!
         object.address = Address.fromJSON(decoder["address"])
+        return object
     }
 
 }
