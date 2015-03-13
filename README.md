@@ -22,7 +22,7 @@ Usage
 
 This framework provides a class named **JSONSerializable** you can inherit from.
 
-When you create your classes, please consider using objc types such as NSNumber (for Bool as well), NSString as Swift optionals bridged types may not be rendered correctly
+When you create your classes, please consider using objc types such as NSNumber (for Bool as well), NSString because Swift optionals bridged types may not be rendered correctly.
 
 When inherited, this class gives you some useful functions, such as
 
