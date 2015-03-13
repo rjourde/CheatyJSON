@@ -173,13 +173,17 @@ import Foundation
 }
 
 @objc protocol JSONJoy {
-    optional func decode(decoder: JSONDecoder) -> Void
+    optional class func fromJSON(decoder: JSONDecoder) -> JSONSerializable
 }
 
 
 public class JSONSerializable : NSObject, JSONJoy {
     
     private var registeredVars:[(String,String)] = []
+    
+    override init() {
+        super.init()
+    }
     
     public func registerVariable(variableName:String, JSONName:String) {
         self.registeredVars.append((variableName, JSONName))
@@ -208,7 +212,7 @@ public class JSONSerializable : NSObject, JSONJoy {
                     break
                 }
             }
-            
+
             if propValue is JSONSerializable {
                 propertiesDictionary.setValue((propValue as JSONSerializable).toDictionary(), forKey: propName)
             } else if propValue is Array<JSONSerializable> {
@@ -235,5 +239,12 @@ public class JSONSerializable : NSObject, JSONJoy {
         return NSString(data: self.JSONData(), encoding: NSUTF8StringEncoding)
     }
 }
+
+
+
+
+
+
+
 
 
