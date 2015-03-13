@@ -14,9 +14,8 @@ To install this, simply add the **.xcodeproj** to your project, and whenever you
 
 import CheatyJSON
 
-
-
-#### <i class="icon-file"></i> How does it work ?
+Usage
+-------------
 
 This framework couldn't be simpler to use.
 It provides a class named **JSONSerializable** you can inherit from.
