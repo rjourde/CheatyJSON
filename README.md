@@ -168,7 +168,7 @@ class User:JSONSerializable {
 }
 ```
 
-Now that the decode function has been implemented:
+Now that the `fromJSON` function has been implemented:
 
 ```swift
 
