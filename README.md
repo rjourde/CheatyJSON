@@ -136,13 +136,14 @@ class Address:JSONSerializable {
     
     ...
     
-    func decode(decoder:JSONDecoder) -> Address {
-        self.objID = decoder["id"].integer!
-        self.streetAddress = decoder["street_address"].string!
-        self.city = decoder["city"].string!
-        self.state = decoder["state"].string!
-        self.postalCode = decoder["postal_code"].string!
-        return self
+    class func fromJSON(decoder:JSONDecoder) -> Address {
+        var object = Address()
+        object.objID = decoder["id"].integer!
+        object.streetAddress = decoder["street_address"].string!
+        object.city = decoder["city"].string!
+        object.state = decoder["state"].string!
+        object.postalCode = decoder["postal_code"].string!
+        return object
     }
 
 }
@@ -151,13 +152,13 @@ class User:JSONSerializable {
    
    ...
    
-   func decode(decoder:JSONDecoder) -> User {
-        self.objID = decoder["id"].integer!
-        self.firstName = decoder["first_name"].string!
-        self.lastName = decoder["last_name"].string!
-        self.age = decoder["age"].integer!
-        self.address = self.address.decode(decoder["address"])
-        return self
+   class func fromJSON(decoder:JSONDecoder) -> User {
+        var object = User()
+        object.objID = decoder["id"].integer!
+        object.firstName = decoder["first_name"].string!
+        object.lastName = decoder["last_name"].string!
+        object.age = decoder["age"].integer!
+        object.address = Address.fromJSON(decoder["address"])
     }
 
 }
@@ -170,7 +171,7 @@ Now that the decode function has been implemented:
 var data:NSData?
 // here you get your data
 
-var person = User().decode(JSONDecoder(data!))
+var person = User.fromJSON(JSONDecoder(data!))
 // Now your object is fully created and filled
 // We now want to change some value
 person.firstName = "new name"
@@ -196,26 +197,6 @@ This will produce the following output:
 }
 ```
 
-There is also a 
-
-```swift 
-class func staticDecode(decoder:JSONDecoder)
-```
-
-you can implement to create your objects.
-
-```swift
-class User ...
-class func staticDecode(decoder: JSONDecoder) -> User {
-        var object = User().decode(decoder)
-        return object
-    }
-}
-    
-    
-// You will no be able to create an object using the following syntax:
-var user = User.staticDecode(JSONDecoder(data!))
-```
 
 ---
 
