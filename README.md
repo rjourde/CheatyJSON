@@ -79,6 +79,50 @@ This will now produce the following output:
 
 Obviously, you can put your `registerVariable` calls directly in `init` if you want all of your objects to behave the same.
 
-
-
+Parsing JSON
 ----------
+
+Thanks to [Daltoniam's awesome library](https://github.com/daltoniam/JSONJoy-Swift) , parsing JSON is as simple as generating it !
+
+## Example
+
+First here is some example JSON we have to parse.
+
+```javascript
+{
+    "id" : 1,
+    "first_name": "John",
+    "last_name": "Smith",
+    "age": 25,
+    "address": {
+        "id": 1
+        "street_address": "2nd Street",
+        "city": "Bakersfield",
+        "state": "CA",
+        "postal_code": 93309
+     }
+
+}
+```
+
+We want to translate that JSON to these Swift objects:
+
+```swift
+class Address::JSONSerializable {
+    var objID: Int?
+    var streetAddress: String?
+    var city: String?
+    var state: String?
+    var postalCode: String?
+
+}
+
+class User:JSONSerializable {
+    var objID: Int?
+    var firstName: String?
+    var lastName: String?
+    var age: Int?
+    var address = Address()
+
+}
+```
