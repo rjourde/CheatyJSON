@@ -99,7 +99,7 @@ First here is some example JSON we have to parse.
         "street_address": "2nd Street",
         "city": "Bakersfield",
         "state": "CA",
-        "postal_code": 93309
+        "postal_code": "93309"
      }
 
 }
