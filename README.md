@@ -196,3 +196,8 @@ This will produce the following output:
 }
 ```
 
+---
+
+Here is a glance at what you'll be able to do with CheatyJSON
+
+
