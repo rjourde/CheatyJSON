@@ -28,13 +28,14 @@ toDictionary()
 
 > **JSONString()** simply transforms your object to a JSON String
 > Example :
-> `class Person:JSONSerializable {
+> ```swift
+> class Person:JSONSerializable {
 > var name:String = "foo"
 > var age:Int = 42
 > var isAwesome:Bool = true
 > }
 > var me = Person()
-> me.JSONString()`
+> me.JSONString()```
 > Will return a String containing
 > `{"name":"foo","age":42,"isAwesome":true}`
 
