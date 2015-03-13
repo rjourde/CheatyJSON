@@ -107,6 +107,8 @@ First here is some example JSON we have to parse.
 
 We want to translate that JSON to these Swift objects:
 
+(Consider not to use optional variables as they might not be rendered correctly)
+
 ```swift
 class Address:JSONSerializable {
     var objID: Int = 0
