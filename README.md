@@ -12,7 +12,8 @@ Installation
 
 To install this, simply add the **.xcodeproj** to your project, and whenever you want to use it in your code, simply type :
 
-import CheatyJSON
+> ```swift
+> import CheatyJSON
 
 Usage
 -------------
