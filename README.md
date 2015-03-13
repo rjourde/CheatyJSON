@@ -109,19 +109,19 @@ We want to translate that JSON to these Swift objects:
 
 ```swift
 class Address:JSONSerializable {
-    var objID: Int?
-    var streetAddress: String?
-    var city: String?
-    var state: String?
-    var postalCode: String?
+    var objID: Int = 0
+    var streetAddress: String = ""
+    var city: String = ""
+    var state: String = ""
+    var postalCode: String = ""
 
 }
 
 class User:JSONSerializable {
-    var objID: Int?
-    var firstName: String?
-    var lastName: String?
-    var age: Int?
+    var objID: Int = 0
+    var firstName: String = ""
+    var lastName: String = ""
+    var age: Int = 0
     var address = Address()
 
 }
@@ -135,11 +135,11 @@ class Address:JSONSerializable {
     ...
     
     func decode(decoder:JSONDecoder) -> Address {
-        self.objID = decoder["id"].integer
-        self.streetAddress = decoder["street_address"].string
-        self.city = decoder["city"].string
-        self.state = decoder["state"].string
-        self.postalCode = decoder["postal_code"].string
+        self.objID = decoder["id"].integer!
+        self.streetAddress = decoder["street_address"].string!
+        self.city = decoder["city"].string!
+        self.state = decoder["state"].string!
+        self.postalCode = decoder["postal_code"].string!
         return self
     }
 
@@ -150,13 +150,13 @@ class User:JSONSerializable {
    ...
    
    func decode(decoder:JSONDecoder) -> User {
-        self.objID = decoder["id"].integer
-        self.firstName = decoder["first_name"].string
-        self.lastName = decoder["last_name"].string
-        self.age = decoder["age"].integer
+        self.objID = decoder["id"].integer!
+        self.firstName = decoder["first_name"].string!
+        self.lastName = decoder["last_name"].string!
+        self.age = decoder["age"].integer!
         self.address = self.address.decode(decoder["address"])
         return self
-   }
+    }
 
 }
 ```
@@ -183,11 +183,13 @@ This will produce the following output:
   "objID": 1,
   "firstName": "new name",
   "lastName": "Smith",
+  "age": 25,
   "address": {
     "objID": 1,
     "state": "CA",
     "city": "Bakersfield",
-    "streetAddress": "2nd Street"
+    "streetAddress": "2nd Street",
+    "postalCode": "93309"
   }
 }
 ```
