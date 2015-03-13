@@ -38,7 +38,7 @@ toDictionary()
 > me.JSONString()```
 
 Will return a String containing
-> '''json
+> '''javascript
 > {"name":"foo","age":42,"isAwesome":true}'''
 
 Readme is still under construction ;)
