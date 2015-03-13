@@ -22,9 +22,11 @@ This framework couldn't be simpler to use.
 It provides a class named **JSONSerializable** you can inherit from.
 When inherited, this class gives you some useful functions, such as
 
-JSONString().
-JSONData().
-toDictionary().
+JSONString()
+
+JSONData()
+
+toDictionary()
 
 > **JSONString()** simply transforms your object to a JSON String
 > Example :
