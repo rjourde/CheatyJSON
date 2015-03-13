@@ -40,7 +40,7 @@ Will return a String containing
 > ```json
 > {"name":"foo","age":42,"isAwesome":true}
 
-The `JSONData()` and `toDictionary()` functions basically do the same, but returns object data as NSData of Dictionary
+The `JSONData()` and `toDictionary()` functions basically do the same, but returns object data as NSData or Dictionary
 
 **What should I do if I want to change the JSON output ?**
 For example, if you'd like to change how a field of your class is displayed, you can use the `registerVariable` or `registerVariables` functions.
@@ -76,6 +76,8 @@ This will now produce the following output:
 > ```json
 > {"age":42,"myNewAwesomeJSONOutputName":"foobar","isAwesome":false}
 
-Obviously, you can put your `registerVariable` calls directly in `init` if you want all your objects to behave the same.
+Obviously, you can put your `registerVariable` calls directly in `init` if you want all of your objects to behave the same.
+
+
 
 ----------
