@@ -10,7 +10,9 @@ CheatyJSON is a Swift framework designed to handle JSON easily
 Installation
 -------------
 
-To install this, simply add the **.xcodeproj** to your project, and whenever you want to use it in your code, simply type :
+To install this, simply add the **.xcodeproj** to your project, and do not forget to link the **.framework** 
+
+Whenever you want to use it in your code, simply type :
 
 > ```swift
 > import CheatyJSON
