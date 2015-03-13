@@ -41,7 +41,42 @@ Will return a String containing
 > ```json
 > {"name":"foo","age":42,"isAwesome":true}
 
-Readme is still under construction ;)
+The `JSONData()` and `toDictionary()` functions basically do the same, but returns object data as NSData of Dictionary
+
+**What should I do if I want to change the JSON output ?**
+For example, if you'd like to change how a field of your class is displayed, you can use the `registerVariable` or `registerVariables` functions.
+
+Let's take a look back at our `Person` class
+
+> ```swift
+> class Person:JSONSerializable {
+>   var firstName:String
+>   var age:Int
+>   var isAwesome:Bool
+>   
+>   init(name:String, age:Int, isAwesome:Bool) {
+>     self.firstName = name
+>     self.age = age
+>     self.isAwesome = isAwesome
+>   }
+> }
+> var person = Person(name:"foobar", age:42, isAwesome:false)
+> println(person.JSONString())
+
+This will produce the following output:
+> ```json
+> {"firstName":"foobar","age":42,"isAwesome":false}
+
+Now, let's use the `registerVariable` function.
+
+> ```swift
+> person.registerVariable("firstName", JSONName: "myNewAwesomeJSONOutputName")
+> println(person.JSONString())
+
+This will now produce the following output:
+> ```json
+> {"age":42,"myNewAwesomeJSONOutputName":"foobar","isAwesome":false}
+
 
 
 ----------
