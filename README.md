@@ -77,6 +77,5 @@ This will now produce the following output:
 > ```json
 > {"age":42,"myNewAwesomeJSONOutputName":"foobar","isAwesome":false}
 
-
-
+Obviously, you can put your `registerVariable` calls directly in `init` if you want all your objects to behave the same.
 ----------
