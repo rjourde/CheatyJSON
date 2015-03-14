@@ -231,7 +231,7 @@ in our Person class, add:
             // We then loop through all our 'friend' decoders
             for friendDecoder in friendsArray {
                 // for each decoder, we will create a Person object
-                self.friends.append(Person(decoder: friendDecoder))
+                self.friends!.append(Person(decoder: friendDecoder))
             }
         }
     }
