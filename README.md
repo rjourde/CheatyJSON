@@ -38,6 +38,7 @@ When inherited, this class gives you some useful functions, such as
 >   var age:NSNumber = 42
 >   var isAwesome:NSNumber = true
 > }
+>
 > var me = Person()
 > me.JSONString()
 
@@ -48,28 +49,29 @@ Will return a String containing
 The `JSONData()` and `toDictionary()` functions basically do the same, but return object data as NSData or Dictionary
 
 **What should I do if I want to change the JSON output ?**
-For example, if you'd like to change the way a field of your class is displayed, you can use the `registerVariable` or `registerVariables` functions.
+For example, if you'd like to change the way a field of your class is displayed, you can implement the `registerVariables` function.
 
 Let's take a look back at our `Person` class
 
 > ```swift
-> class Person:JSONSerializable {
->   var firstName:NSString
->   var age:NSNumber
->   var isAwesome:NSNumber
->   
->   init(name:NSString, age:NSNumber, isAwesome:NSNumber) {
->     self.firstName = name
->     self.age = age
->     self.isAwesome = isAwesome
->   }
-> }
-> var person = Person(name:"foobar", age:42, isAwesome:false)
+class Person:JSONSerializable {
+    var firstName:NSString?
+    var age:NSNumber?
+    var isAwesome:NSNumber?
+    init(name:NSString, age:NSNumber, isAwesome:NSNumber) {
+        super.init()
+        self.firstName = name
+        self.age = age
+        self.isAwesome = isAwesome
+    }
+}
+>
+> var person = Person(name:"foobar", age:42, isAwesome:true)
 > println(person.JSONString())
 
 This will produce the following output:
 > ```json
-> {"firstName":"foobar","age":42,"isAwesome":false}
+> {"firstName":"foobar","age":42,"isAwesome":true}
 
 Now, let's use the `registerVariable` function.
 
