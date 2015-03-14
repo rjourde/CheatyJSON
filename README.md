@@ -175,7 +175,7 @@ class Person:JSONSerializable {
     var lastName: NSString?
     var age: NSNumber?
     var friends: [Person]?
-    var address = Address?
+    var address = Address()
     
     override func registerVariables() {
         // Again, we register our variables to match the JSON
@@ -196,62 +196,20 @@ var data:NSData?
 
 var person = Person(JSONData:data!)
 
+println(person.firstName)
+println(person.lastName)
+println(person.age)
+
+println(person.JSONString())
+
 ```
 
 This will produce the following output:
 
-```json
-{
-  "objID": 1,
-  "firstName": "new name",
-  "lastName": "Smith",
-  "age": 25,
-  "address": {
-    "objID": 1,
-    "state": "CA",
-    "city": "Bakersfield",
-    "streetAddress": "2nd Street",
-    "postalCode": "93309"
-  }
-}
-```
 
 ---
 
 Now we'd like to parse a JSON Array of users
-
-##Example
-
-```json
-[
-  {
-    "objID": 1,
-    "firstName": "John",
-    "lastName": "Smith",
-    "age": 25,
-    "address": {
-      "objID": 1,
-      "state": "CA",
-      "city": "Bakersfield",
-      "streetAddress": "2nd Street",
-      "postalCode": "93309"
-    }
-  },
-  {
-    "objID": 2,
-    "firstName": "Tom",
-    "lastName": "Smith",
-    "age": 22,
-    "address": {
-      "objID": 2,
-      "state": "CA",
-      "city": "Bakersfield",
-      "streetAddress": "2nd Street",
-      "postalCode": "93309"
-    }
-  }
-]
-```
 
 Simply, we're gonna create an array and fill it.
 
