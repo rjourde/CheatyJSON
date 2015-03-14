@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Alexandre Ronse. All rights reserved.
 //
 
+import Foundation
 
 /// Using JSONDecoder from JSONJoy, all credits goes to https://github.com/daltoniam/JSONJoy-Swift
 @objc public class JSONDecoder {
@@ -171,31 +172,101 @@
     }
 }
 
-@objc protocol JSONJoy {
-    optional class func fromJSON(decoder: JSONDecoder) -> JSONSerializable
-}
-
-
-public class JSONSerializable : NSObject, JSONJoy {
+@objc public class JSONSerializable : NSObject {
     
-    public override init() {
+    override init() {
         super.init()
+    }
+    
+    public func registerVariables() {
+        
+    }
+    
+    init(decoder:JSONDecoder) {
+        super.init()
+        self.fromJSON(decoder)
+    }
+    
+    init(JSONString:String) {
+        super.init()
+        self.fromJSON(JSONString)
+    }
+    
+    init(JSONData:NSData?) {
+        super.init()
+        if JSONData != nil {
+            self.fromJSON(JSONData!)
+        }
     }
     
     private var registeredVars:[(String,String)] = []
     
     
-    public func registerVariable(variableName:String, JSONName:String) {
+    public final func registerVariable(variableName:String, JSONName:String) {
         self.registeredVars.append((variableName, JSONName))
     }
     
-    public func registerVariables(variables:[(String,String)]) {
+    public final func registerVariables(variables:[(String,String)]) {
         for variable in variables {
             self.registeredVars.append(variable)
         }
     }
     
+    public func JSONCompletion(decoder:JSONDecoder) {
+        
+    }
+    
+    public final func fromJSON(data:NSData!) -> JSONSerializable {
+        return self.fromJSON(JSONDecoder(data))
+    }
+    
+    public final func fromJSON(string:String) -> JSONSerializable {
+        return self.fromJSON(string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!)
+    }
+    
+    public final func fromJSON(decoder:JSONDecoder) -> JSONSerializable {
+        self.registeredVars.removeAll(keepCapacity: false)
+        self.registerVariables()
+        var aClass : AnyClass? = self.dynamicType
+        var propertiesCount : CUnsignedInt = 0
+        let propertiesInAClass : UnsafeMutablePointer<objc_property_t> = class_copyPropertyList(aClass, &propertiesCount)
+        var propertiesDictionary : NSMutableDictionary = NSMutableDictionary()
+        for var i = 0; i < Int(propertiesCount); i++ {
+            var property = propertiesInAClass[i]
+            var propName = NSString(CString: property_getName(property), encoding: NSUTF8StringEncoding)!
+            
+            var jsonName = propName
+            for elem in self.registeredVars {
+                if elem.0 == propName {
+                    jsonName = elem.1
+                    break
+                }
+            }
+            
+            var value: AnyObject? = decoder[jsonName].value
+            
+            if value is NSError {continue}
+            if value is Array<AnyObject> {
+                self.setValue([], forKey: propName)
+                var objectArray = self.mutableSetValueForKey(propName)
+                var newSet = NSMutableSet()
+                if let array = decoder[propName].array {
+                    for elem in array {
+                        if elem.value != nil {objectArray.addObject(elem.value!)}
+                    }
+                }
+            } else {
+                self.setValue(value, forKey: propName)
+            }
+        }
+        propertiesInAClass.dealloc(Int(propertiesCount))
+        self.JSONCompletion(decoder)
+        return self
+    }
+    
     public func toDictionary() -> NSDictionary {
+        self.registeredVars.removeAll(keepCapacity: false)
+        self.registerVariables()
         var aClass : AnyClass? = self.dynamicType
         var propertiesCount : CUnsignedInt = 0
         let propertiesInAClass : UnsafeMutablePointer<objc_property_t> = class_copyPropertyList(aClass, &propertiesCount)
@@ -239,12 +310,3 @@ public class JSONSerializable : NSObject, JSONJoy {
         return NSString(data: self.JSONData(), encoding: NSUTF8StringEncoding)
     }
 }
-
-
-
-
-
-
-
-
-
