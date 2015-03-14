@@ -228,7 +228,9 @@ in our Person class, add:
         self.friends = []
         // First, we get our array from the "friends" JSON field
         if let friendsArray = decoder["friends"].array {
+            // We then loop through all our 'friend' decoders
             for friendDecoder in friendsArray {
+                // for each decoder, we will create a Person object
                 self.friends.append(Person(decoder: friendDecoder))
             }
         }
