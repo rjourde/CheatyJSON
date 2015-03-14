@@ -237,26 +237,57 @@ in our Person class, add:
     }
 ```
 
----
+That's it! You now have all your JSON as Swift objects
 
-Now we'd like to parse a JSON Array of users
+To check it, we can simply print the `person.JSONString()`, it will produce the following output:
 
-Simply, we're gonna create an array and fill it.
-
-```swift
-var data:NSData?
-/// ... get your data here
-// once you have your data, simply do
-var users:[User] = []
-var decoder = JSONDecoder(data!)
-if let array = decoder.array {
-    for element in array {
-        users.append(User(element))
+```json
+{
+  "age": 42,
+  "friends": [
+    {
+      "age": 52,
+      "friends": [],
+      "last_name": "White",
+      "first_name": "Walter",
+      "address": {
+        "street_name": "Walter's street",
+        "city": "Albuquerque",
+        "postal_code": "123"
+      }
+    },
+    {
+      "age": 26,
+      "friends": [
+        {
+          "age": 27,
+          "friends": [],
+          "last_name": "Margolis",
+          "first_name": "Jane",
+          "address": {
+            "street_name": "Jane's street",
+            "city": "Albuquerque",
+            "postal_code": "123"
+          }
+        }
+      ],
+      "last_name": "Pinkman",
+      "first_name": "Jesse",
+      "address": {
+        "street_name": "Jesse's street",
+        "city": "Albuquerque",
+        "postal_code": "123"
+      }
     }
+  ],
+  "last_name": "Schrader",
+  "first_name": "Hank",
+  "address": {
+    "street_name": "Hank's street",
+    "city": "Albuquerque",
+    "postal_code": "123"
+  }
 }
-
-// Here you have an User array completely filled in just a few lines of code
-
 ```
 
 ---
