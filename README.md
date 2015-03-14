@@ -104,52 +104,52 @@ Thanks to [Daltoniam's JSONDecoder](https://github.com/daltoniam/JSONJoy-Swift) 
 First here is some example JSON we have to parse.
 
 ```json
->{
->  "first_name": "Hank",
->  "last_name": "Schrader",
->  "age": 42,
->  "address": {
->    "street_name": "Hank's street",
->    "postal_code": "",
->    "city": "Albuquerque"
->  },
->  "friends": [
->    {
->      "first_name": "Walter",
->      "last_name": "White",
->      "age": 52,
->      "address": {
->        "street_name": "Walter's street",
->        "postal_code": "",
->        "city": "Albuquerque"
->      },
->      "friends": []
->    },
->    {
->      "first_name": "Jesse",
->      "last_name": "Pinkman",
->      "age": 26,
->      "address": {
->        "street_name": "Jesse's street",
->        "postal_code": "",
->        "city": "Albuquerque"
->      },
->      "friends": [
->        {
->          "first_name": "Jane",
->          "last_name": "Margolis",
->          "age": 27,
->          "address": {
->            "street_name": "Jane's street",
->            "postal_code": "",
->            "city": "Albuquerque"
->          },
->          "friends": []
->        }
->      ]
->    }
->  ]
->}
+> {
+>   "first_name": "Hank",
+>   "last_name": "Schrader",
+>   "age": 42,
+>   "address": {
+>     "street_name": "Hank's street",
+>     "postal_code": "",
+>     "city": "Albuquerque"
+>   },
+>   "friends": [
+>     {
+>       "first_name": "Walter",
+>       "last_name": "White",
+>       "age": 52,
+>       "address": {
+>         "street_name": "Walter's street",
+>         "postal_code": "",
+>         "city": "Albuquerque"
+>       },
+>       "friends": []
+>     },
+>     {
+>       "first_name": "Jesse",
+>       "last_name": "Pinkman",
+>       "age": 26,
+>       "address": {
+>         "street_name": "Jesse's street",
+>         "postal_code": "",
+>         "city": "Albuquerque"
+>       },
+>       "friends": [
+>         {
+>           "first_name": "Jane",
+>           "last_name": "Margolis",
+>           "age": 27,
+>           "address": {
+>             "street_name": "Jane's street",
+>             "postal_code": "",
+>             "city": "Albuquerque"
+>           },
+>           "friends": []
+>         }
+>       ]
+>     }
+>   ]
+> }
 ```
 
 We want to translate that JSON to these Swift objects:
