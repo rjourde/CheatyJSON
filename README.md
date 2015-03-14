@@ -104,52 +104,52 @@ Thanks to [Daltoniam's JSONDecoder](https://github.com/daltoniam/JSONJoy-Swift) 
 First here is some example JSON we have to parse.
 
 ```json
-> {
->   "first_name": "Hank",
->   "last_name": "Schrader",
->   "age": 42,
->   "address": {
->     "street_name": "Hank's street",
->     "postal_code": "",
->     "city": "Albuquerque"
->   },
->   "friends": [
->     {
->       "first_name": "Walter",
->       "last_name": "White",
->       "age": 52,
->       "address": {
->         "street_name": "Walter's street",
->         "postal_code": "",
->         "city": "Albuquerque"
->       },
->       "friends": []
->     },
->     {
->       "first_name": "Jesse",
->       "last_name": "Pinkman",
->       "age": 26,
->       "address": {
->         "street_name": "Jesse's street",
->         "postal_code": "",
->         "city": "Albuquerque"
->       },
->       "friends": [
->         {
->           "first_name": "Jane",
->           "last_name": "Margolis",
->           "age": 27,
->           "address": {
->             "street_name": "Jane's street",
->             "postal_code": "",
->             "city": "Albuquerque"
->           },
->           "friends": []
->         }
->       ]
->     }
->   ]
-> }
+{
+  "first_name": "Hank",
+  "last_name": "Schrader",
+  "age": 42,
+  "address": {
+    "street_name": "Hank's street",
+    "postal_code": "",
+    "city": "Albuquerque"
+  },
+  "friends": [
+    {
+      "first_name": "Walter",
+      "last_name": "White",
+      "age": 52,
+      "address": {
+        "street_name": "Walter's street",
+        "postal_code": "",
+        "city": "Albuquerque"
+      },
+      "friends": []
+    },
+    {
+      "first_name": "Jesse",
+      "last_name": "Pinkman",
+      "age": 26,
+      "address": {
+        "street_name": "Jesse's street",
+        "postal_code": "",
+        "city": "Albuquerque"
+      },
+      "friends": [
+        {
+          "first_name": "Jane",
+          "last_name": "Margolis",
+          "age": 27,
+          "address": {
+            "street_name": "Jane's street",
+            "postal_code": "",
+            "city": "Albuquerque"
+          },
+          "friends": []
+        }
+      ]
+    }
+  ]
+}
 ```
 
 We want to translate that JSON to these Swift objects:
@@ -157,73 +157,45 @@ We want to translate that JSON to these Swift objects:
 
 ```swift
 class Address:JSONSerializable {
-    var objID: NSNumber?
     var streetAddress: NSString?
     var city: NSString?
-    var state: NSString?
     var postalCode: NSString?
+    
+    override func registerVariables() {
+        // Here we implement the function to match our JSON
+        self.registerVariable("streetAddress", JSONName: "street_name")
+        self.registerVariable("postalCode", JSONName: "postal_code")
+        // Note that city has not been registered because its name already matches our JSON
+    }
 
 }
 
-class User:JSONSerializable {
-    var objID: NSNumber?
+class Person:JSONSerializable {
     var firstName: NSString?
     var lastName: NSString?
     var age: NSNumber?
-    var address = Address()
-
-}
-```
-
-To do so, simply implement the `class func fromJSON(decoder:JSONDecoder)` function.
-
-```swift
-class Address:JSONSerializable {
+    var friends: [Person]?
+    var address = Address?
     
-    ...
-    
-    class func fromJSON(decoder:JSONDecoder) -> Address {
-        var object = Address()
-        object.objID = decoder["id"].integer
-        object.streetAddress = decoder["street_address"].string
-        object.city = decoder["city"].string
-        object.state = decoder["state"].string
-        object.postalCode = decoder["postal_code"].string
-        return object
-    }
-
-}
-
-class User:JSONSerializable {
-   
-   ...
-   
-   class func fromJSON(decoder:JSONDecoder) -> User {
-        var object = User()
-        object.objID = decoder["id"].integer
-        object.firstName = decoder["first_name"].string
-        object.lastName = decoder["last_name"].string
-        object.age = decoder["age"].integer
-        object.address = Address.fromJSON(decoder["address"])
-        return object
+    override func registerVariables() {
+        // Again, we register our variables to match the JSON
+        self.registerVariable("firstName", JSONName: "first_name")
+        self.registerVariable("lastName", JSONName: "last_name")
+        // Again, age, friends and address variables have not been registered as they already match our JSON
     }
 
 }
 ```
 
-Now that the `fromJSON` function has been implemented:
+Now, let's see how to create our object
 
 ```swift
 
 var data:NSData?
 // here you get your data
 
-var person = User.fromJSON(JSONDecoder(data!))
-// Now your object is fully created and filled
-// We now want to change some value
-person.firstName = "new name"
-// We want to see our object as JSON
-println(person.JSONString())
+var person = Person(JSONData:data!)
+
 ```
 
 This will produce the following output:
