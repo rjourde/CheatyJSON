@@ -199,13 +199,41 @@ var person = Person(JSONData:data!)
 println(person.firstName)
 println(person.lastName)
 println(person.age)
-
-println(person.JSONString())
-
 ```
 
 This will produce the following output:
 
+```
+Optional(Hank)
+Optional(Schrader)
+Optional(42)
+```
+
+If you try to access the other fields, you'll get an error.
+
+Automatic JSON deserialization cannot retrieve nested class or array of nested classes automatically.
+
+To get them, you will have to write a little bit of code
+
+if your class have nested classes of array of nested classes, you will have to implement the `JSONCompletion(decoder:JSONDecoder)` function.
+
+in our Person class, add:
+
+```swift
+    override func JSONCompletion(decoder: JSONDecoder) {
+        self.address = Address(decoder: decoder["address"])
+        // Basically, this code creates your Address object given the "address" field of our JSON
+        // Now, we want to fill our friends array
+        // To do so, we're gonna simply create and fill it
+        self.friends = []
+        // First, we get our array from the "friends" JSON field
+        if let friendsArray = decoder["friends"].array {
+            for friendDecoder in friendsArray {
+                self.friends.append(Person(decoder: friendDecoder))
+            }
+        }
+    }
+```
 
 ---
 
