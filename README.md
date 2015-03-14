@@ -110,7 +110,7 @@ First here is some example JSON we have to parse.
   "age": 42,
   "address": {
     "street_name": "Hank's street",
-    "postal_code": "",
+    "postal_code": "123",
     "city": "Albuquerque"
   },
   "friends": [
@@ -120,7 +120,7 @@ First here is some example JSON we have to parse.
       "age": 52,
       "address": {
         "street_name": "Walter's street",
-        "postal_code": "",
+        "postal_code": "123",
         "city": "Albuquerque"
       },
       "friends": []
@@ -131,7 +131,7 @@ First here is some example JSON we have to parse.
       "age": 26,
       "address": {
         "street_name": "Jesse's street",
-        "postal_code": "",
+        "postal_code": "123",
         "city": "Albuquerque"
       },
       "friends": [
@@ -141,7 +141,7 @@ First here is some example JSON we have to parse.
           "age": 27,
           "address": {
             "street_name": "Jane's street",
-            "postal_code": "",
+            "postal_code": "123",
             "city": "Albuquerque"
           },
           "friends": []
