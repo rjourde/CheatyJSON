@@ -33,13 +33,20 @@ When inherited, this class gives you some useful functions, such as
 > **JSONString()** simply transforms your object to a JSON String
 > Example :
 > ```swift
-> class Person:JSONSerializable {
->   var name:NSString = "foo"
->   var age:NSNumber = 42
->   var isAwesome:NSNumber = true
-> }
+> ```swift
+class Person:JSONSerializable {
+    var firstName:NSString?
+    var age:NSNumber?
+    var isAwesome:NSNumber?
+    init(name:NSString, age:NSNumber, isAwesome:NSNumber) {
+        super.init()
+        self.firstName = name
+        self.age = age
+        self.isAwesome = isAwesome
+    }
+}
 >
-> var me = Person()
+> var me = Person(name:"foobar", age:42, isAwesome:true)
 > me.JSONString()
 
 Will return a String containing
@@ -49,6 +56,7 @@ Will return a String containing
 The `JSONData()` and `toDictionary()` functions basically do the same, but return object data as NSData or Dictionary
 
 **What should I do if I want to change the JSON output ?**
+
 For example, if you'd like to change the way a field of your class is displayed, you can implement the `registerVariables` function.
 
 Let's take a look back at our `Person` class
@@ -76,39 +84,72 @@ This will produce the following output:
 Now, let's use the `registerVariable` function.
 
 > ```swift
-> person.registerVariable("firstName", JSONName: "myNewAwesomeJSONOutputName")
+override func registerVariables() {
+        self.registerVariable("firstName", JSONName: "my_name")
+    }
 > println(person.JSONString())
 
 This will now produce the following output:
 > ```json
-> {"age":42,"myNewAwesomeJSONOutputName":"foobar","isAwesome":false}
+> {"my_name":"foobar","age":42,"isAwesome":true}
 
-Obviously, you can put your `registerVariable` calls directly in `init` if you want all of your objects to behave the same.
 
 Parsing JSON
 ----------
 
-Thanks to [Daltoniam's awesome library](https://github.com/daltoniam/JSONJoy-Swift) , parsing JSON is as simple as generating it !
+Thanks to [Daltoniam's JSONDecoder](https://github.com/daltoniam/JSONJoy-Swift) , parsing JSON is as simple as generating it !
 
 ## Example
 
 First here is some example JSON we have to parse.
 
-```javascript
-{
-    "id" : 1,
-    "first_name": "John",
-    "last_name": "Smith",
-    "age": 25,
-    "address": {
-        "id": 1,
-        "street_address": "2nd Street",
-        "city": "Bakersfield",
-        "state": "CA",
-        "postal_code": "93309"
-     }
-
-}
+```json
+>{
+>  "first_name": "Hank",
+>  "last_name": "Schrader",
+>  "age": 42,
+>  "address": {
+>    "street_name": "Hank's street",
+>    "postal_code": "",
+>    "city": "Albuquerque"
+>  },
+>  "friends": [
+>    {
+>      "first_name": "Walter",
+>      "last_name": "White",
+>      "age": 52,
+>      "address": {
+>        "street_name": "Walter's street",
+>        "postal_code": "",
+>        "city": "Albuquerque"
+>      },
+>      "friends": []
+>    },
+>    {
+>      "first_name": "Jesse",
+>      "last_name": "Pinkman",
+>      "age": 26,
+>      "address": {
+>        "street_name": "Jesse's street",
+>        "postal_code": "",
+>        "city": "Albuquerque"
+>      },
+>      "friends": [
+>        {
+>          "first_name": "Jane",
+>          "last_name": "Margolis",
+>          "age": 27,
+>          "address": {
+>            "street_name": "Jane's street",
+>            "postal_code": "",
+>            "city": "Albuquerque"
+>          },
+>          "friends": []
+>        }
+>      ]
+>    }
+>  ]
+>}
 ```
 
 We want to translate that JSON to these Swift objects:
