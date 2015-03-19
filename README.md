@@ -32,8 +32,7 @@ When inherited, this class gives you some useful functions, such as
 
 > **JSONString()** simply transforms your object to a JSON String
 > Example :
-> ```swift
-> ```swift
+```swift
 class Person:JSONSerializable {
     var firstName:NSString?
     var age:NSNumber?
