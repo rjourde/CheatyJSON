@@ -111,7 +111,7 @@ import Foundation
         } else if let dict = rawObject as? NSDictionary {
             var collect = Dictionary<String,JSONDecoder>()
             for (key,val: AnyObject) in dict {
-                collect[key as String] = JSONDecoder(val)
+                collect[key as! String] = JSONDecoder(val)
             }
             value = collect
         } else {
@@ -123,7 +123,7 @@ import Foundation
         get {
             if let array = self.value as? NSArray {
                 if array.count > index {
-                    return array[index] as JSONDecoder
+                    return array[index] as! JSONDecoder
                 }
             }
             return JSONDecoder(createError("index: \(index) is greater than array or this is not an Array type."))
@@ -134,7 +134,7 @@ import Foundation
         get {
             if let dict = self.value as? NSDictionary {
                 if let value: AnyObject = dict[key] {
-                    return value as JSONDecoder
+                    return value as! JSONDecoder
                 }
             }
             return JSONDecoder(createError("key: \(key) does not exist or this is not a Dictionary type"))
@@ -184,18 +184,18 @@ import Foundation
     
     init(decoder:JSONDecoder) {
         super.init()
-        self.fromJSON(decoder)
+        self.fromJSONDecoder(decoder)
     }
     
     init(JSONString:String) {
         super.init()
-        self.fromJSON(JSONString)
+        self.fromJSONString(JSONString)
     }
     
     init(JSONData:NSData?) {
         super.init()
         if JSONData != nil {
-            self.fromJSON(JSONData!)
+            self.fromJSONData(JSONData!)
         }
     }
     
@@ -216,15 +216,15 @@ import Foundation
         
     }
     
-    public final func fromJSON(data:NSData!) -> JSONSerializable {
-        return self.fromJSON(JSONDecoder(data))
+    public final func fromJSONData(data:NSData!) -> JSONSerializable {
+        return self.fromJSONDecoder(JSONDecoder(data))
     }
     
-    public final func fromJSON(string:String) -> JSONSerializable {
-        return self.fromJSON(string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!)
+    public final func fromJSONString(string:String) -> JSONSerializable {
+        return self.fromJSONData(string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!)
     }
     
-    public final func fromJSON(decoder:JSONDecoder) -> JSONSerializable {
+    public final func fromJSONDecoder(decoder:JSONDecoder) -> JSONSerializable {
         self.registeredVars.removeAll(keepCapacity: false)
         self.registerVariables()
         var aClass : AnyClass? = self.dynamicType
@@ -243,20 +243,20 @@ import Foundation
                 }
             }
             
-            var value: AnyObject? = decoder[jsonName].value
+            var value: AnyObject? = decoder[jsonName as String].value
             
             if value is NSError {continue}
             if value is Array<AnyObject> {
-                self.setValue([], forKey: propName)
-                var objectArray = self.mutableSetValueForKey(propName)
+                self.setValue([], forKey: propName as String)
+                var objectArray = self.mutableSetValueForKey(propName as String)
                 var newSet = NSMutableSet()
-                if let array = decoder[propName].array {
+                if let array = decoder[propName as String].array {
                     for elem in array {
                         if elem.value != nil {objectArray.addObject(elem.value!)}
                     }
                 }
             } else {
-                self.setValue(value, forKey: propName)
+                self.setValue(value, forKey: propName as String)
             }
         }
         propertiesInAClass.dealloc(Int(propertiesCount))
@@ -275,7 +275,7 @@ import Foundation
             var property = propertiesInAClass[i]
             var propName = NSString(CString: property_getName(property), encoding: NSUTF8StringEncoding)!
             var propType = property_getAttributes(property)
-            var propValue:AnyObject! = self.valueForKey(propName);
+            var propValue:AnyObject! = self.valueForKey(propName as String)
             
             for variable in self.registeredVars {
                 if variable.0 == propName {
@@ -285,15 +285,15 @@ import Foundation
             }
             
             if propValue is JSONSerializable {
-                propertiesDictionary.setValue((propValue as JSONSerializable).toDictionary(), forKey: propName)
+                propertiesDictionary.setValue((propValue as! JSONSerializable).toDictionary(), forKey: propName as String)
             } else if propValue is Array<JSONSerializable> {
                 var subArray = Array<NSDictionary>()
-                for item in (propValue as Array<JSONSerializable>) {
+                for item in (propValue as! Array<JSONSerializable>) {
                     subArray.append(item.toDictionary())
                 }
-                propertiesDictionary.setValue(subArray, forKey: propName)
+                propertiesDictionary.setValue(subArray, forKey: propName as String)
             } else {
-                propertiesDictionary.setValue(propValue, forKey: propName)
+                propertiesDictionary.setValue(propValue, forKey: propName as String)
             }
         }
         propertiesInAClass.dealloc(Int(propertiesCount))
