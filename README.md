@@ -2,7 +2,7 @@ CheatyJSON
 ===================
 
 
-CheatyJSON is a Swift framework designed to handle JSON easily
+CheatyJSON is a Swift framework designed to handle JSON easily.
 
 ----------
 
