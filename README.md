@@ -17,6 +17,9 @@ Whenever you want to use it in your code, simply type :
 > ```swift
 > import CheatyJSON
 
+or simply use pod
+> pod 'CheatyJSON'
+
 Usage
 -------------
 
