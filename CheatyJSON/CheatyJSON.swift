@@ -182,17 +182,17 @@ import Foundation
         
     }
     
-    init(decoder:JSONDecoder) {
+    public init(decoder:JSONDecoder) {
         super.init()
         self.fromJSONDecoder(decoder)
     }
     
-    init(JSONString:String) {
+    public init(JSONString:String) {
         super.init()
         self.fromJSONString(JSONString)
     }
     
-    init(JSONData:NSData?) {
+    public init(JSONData:NSData?) {
         super.init()
         if JSONData != nil {
             self.fromJSONData(JSONData!)
