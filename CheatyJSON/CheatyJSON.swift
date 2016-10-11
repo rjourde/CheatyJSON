@@ -7,39 +7,59 @@
 //
 
 import Foundation
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 /// Using JSONDecoder from JSONJoy, all credits goes to https://github.com/daltoniam/JSONJoy-Swift
-public class JSONDecoder {
-    var value: AnyObject?
+open class JSONDecoder {
+    var value: Any?
     
     ///print the description of the JSONDecoder
-    public var description: String {
+    open var description: String {
         return self.print()
     }
     ///convert the value to a String
-    public var string: String? {
+    open var string: String? {
         return value as? String
     }
     ///convert the value to an Int
-    public var integer: Int? {
+    open var integer: Int? {
         return value as? Int
     }
     ///convert the value to an UInt
-    public var unsigned: UInt? {
+    open var unsigned: UInt? {
         return value as? UInt
     }
     ///convert the value to a Double
-    public var double: Double? {
+    open var double: Double? {
         return value as? Double
     }
     ///convert the value to a float
-    public var float: Float? {
+    open var float: Float? {
         return value as? Float
     }
     ///treat the value as a bool
-    public var boolean: Bool {
+    open var boolean: Bool {
         if let str = self.string {
-            let lower = str.lowercaseString
+            let lower = str.lowercased()
             if lower == "true" || Int(lower) > 0 {
                 return true
             }
@@ -53,19 +73,19 @@ public class JSONDecoder {
         return false
     }
     //get  the value if it is an error
-    public var error: NSError? {
+    open var error: NSError? {
         return value as? NSError
     }
     //get  the value if it is a dictionary
-    public var dictionary: Dictionary<String,JSONDecoder>? {
+    open var dictionary: Dictionary<String,JSONDecoder>? {
         return value as? Dictionary<String,JSONDecoder>
     }
     //get  the value if it is an array
-    public var array: Array<JSONDecoder>? {
+    open var array: Array<JSONDecoder>? {
         return value as? Array<JSONDecoder>
     }
     //pull the raw values out of an array
-    public func getArray<T>(inout collect: Array<T>?) {
+    open func getArray<T>(_ collect: inout Array<T>?) {
         if let array = value as? Array<JSONDecoder> {
             if collect == nil {
                 collect = Array<T>()
@@ -78,7 +98,7 @@ public class JSONDecoder {
         }
     }
     ///pull the raw values out of a dictionary.
-    public func getDictionary<T>(inout collect: Dictionary<String,T>?) {
+    open func getDictionary<T>(_ collect: inout Dictionary<String,T>?) {
         if let dictionary = value as? Dictionary<String,JSONDecoder> {
             if collect == nil {
                 collect = Dictionary<String,T>()
@@ -91,36 +111,36 @@ public class JSONDecoder {
         }
     }
     ///the init that converts everything to something nice
-    public init(_ raw: AnyObject) {
-        var rawObject: AnyObject = raw
-        if let data = rawObject as? NSData {
+    public init(_ raw: Any) {
+        var rawObject: Any = raw
+        if let data = rawObject as? Data {
             do {
-                let response = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions())
+                let response = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions())
                 
-                rawObject = response
+                rawObject = response as Any
             } catch {
-                value = error as? AnyObject
+                value = error as Any
                 return
             }
         }
         if let array = rawObject as? NSArray {
             var collect = [JSONDecoder]()
-            for val: AnyObject in array {
+            for val in array {
                 collect.append(JSONDecoder(val))
             }
-            value = collect
+            value = collect as AnyObject?
         } else if let dict = rawObject as? NSDictionary {
             var collect = Dictionary<String,JSONDecoder>()
             for (key,val) in dict {
-                collect[key as! String] = JSONDecoder(val)
+                collect[key as! String] = JSONDecoder(val as AnyObject)
             }
-            value = collect
+            value = collect as AnyObject?
         } else {
             value = rawObject
         }
     }
     ///Array access support
-    public subscript(index: Int) -> JSONDecoder {
+    open subscript(index: Int) -> JSONDecoder {
         get {
             if let array = self.value as? NSArray {
                 if array.count > index {
@@ -131,10 +151,10 @@ public class JSONDecoder {
         }
     }
     ///Dictionary access support
-    public subscript(key: String) -> JSONDecoder {
+    open subscript(key: String) -> JSONDecoder {
         get {
             if let dict = self.value as? NSDictionary {
-                if let value: AnyObject = dict[key] {
+                if let value = dict[key] {
                     return value as! JSONDecoder
                 }
             }
@@ -142,25 +162,25 @@ public class JSONDecoder {
         }
     }
     ///private method to create an error
-    func createError(text: String) -> NSError {
+    func createError(_ text: String) -> NSError {
         return NSError(domain: "JSONJoy", code: 1002, userInfo: [NSLocalizedDescriptionKey: text]);
     }
     
     ///print the decoder in a JSON format. Helpful for debugging.
-    public func print() -> String {
+    open func print() -> String {
         if let arr = self.array {
             var str = "["
             for decoder in arr {
                 str += decoder.print() + ","
             }
-            str.removeAtIndex(str.endIndex.advancedBy(-1))
+            str.remove(at: str.characters.index(str.endIndex, offsetBy: -1))
             return str + "]"
         } else if let dict = self.dictionary {
             var str = "{"
             for (key, decoder) in dict {
                 str += "\"\(key)\": \(decoder.print()),"
             }
-            str.removeAtIndex(str.endIndex.advancedBy(-1))
+            str.remove(at: str.characters.index(str.endIndex, offsetBy: -1))
             return str + "}"
         }
         if value != nil {
@@ -173,113 +193,113 @@ public class JSONDecoder {
     }
 }
 
-@objc public class JSONSerializable : NSObject {
+@objc open class JSONSerializable : NSObject {
     
     override init() {
         super.init()
     }
     
-    public func registerVariables() {
+    open func registerVariables() {
         
     }
     
     public init(decoder:JSONDecoder) {
         super.init()
-        self.fromJSONDecoder(decoder)
+        _ = self.fromJSONDecoder(decoder)
     }
     
     public init(JSONString:String) {
         super.init()
-        self.fromJSONString(JSONString)
+        _ = self.fromJSONString(JSONString)
     }
     
-    public init(JSONData:NSData?) {
+    public init(JSONData:Data?) {
         super.init()
         if JSONData != nil {
-            self.fromJSONData(JSONData!)
+            _ = self.fromJSONData(JSONData!)
         }
     }
     
-    private var registeredVars:[(String,String)] = []
+    fileprivate var registeredVars:[(String,String)] = []
     
     
-    public final func registerVariable(variableName:String, JSONName:String) {
+    public final func registerVariable(_ variableName:String, JSONName:String) {
         self.registeredVars.append((variableName, JSONName))
     }
     
-    public final func registerVariables(variables:[(String,String)]) {
+    public final func registerVariables(_ variables:[(String,String)]) {
         for variable in variables {
             self.registeredVars.append(variable)
         }
     }
     
-    public func JSONCompletion(decoder:JSONDecoder) {
+    open func JSONCompletion(_ decoder:JSONDecoder) {
         
     }
     
-    public final func fromJSONData(data:NSData!) -> JSONSerializable {
-        return self.fromJSONDecoder(JSONDecoder(data))
+    public final func fromJSONData(_ data:Data!) -> JSONSerializable {
+        return self.fromJSONDecoder(JSONDecoder(data as AnyObject))
     }
     
-    public final func fromJSONString(string:String) -> JSONSerializable {
-        return self.fromJSONData(string.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)!)
+    public final func fromJSONString(_ string:String) -> JSONSerializable {
+        return self.fromJSONData(string.data(using: String.Encoding.utf8, allowLossyConversion: false)!)
     }
     
-    public final func fromJSONDecoder(decoder:JSONDecoder) -> JSONSerializable {
-        self.registeredVars.removeAll(keepCapacity: false)
+    public final func fromJSONDecoder(_ decoder:JSONDecoder) -> JSONSerializable {
+        self.registeredVars.removeAll(keepingCapacity: false)
         self.registerVariables()
-        let aClass : AnyClass? = self.dynamicType
+        let aClass : AnyClass? = type(of: self)
         var propertiesCount : CUnsignedInt = 0
-        let propertiesInAClass : UnsafeMutablePointer<objc_property_t> = class_copyPropertyList(aClass, &propertiesCount)
+        let propertiesInAClass : UnsafeMutablePointer<objc_property_t?> = class_copyPropertyList(aClass, &propertiesCount)
         
         for i in 0 ..< Int(propertiesCount) {
             let property = propertiesInAClass[i]
-            let propName = NSString(CString: property_getName(property), encoding: NSUTF8StringEncoding)!
+            let propName = NSString(cString: property_getName(property), encoding: String.Encoding.utf8.rawValue)!
             
             var jsonName = propName
             for elem in self.registeredVars {
-                if elem.0 == propName {
-                    jsonName = elem.1
+                if elem.0 == propName as String {
+                    jsonName = elem.1 as NSString
                     break
                 }
             }
             
-            let value: AnyObject? = decoder[jsonName as String].value
+            let value: Any? = decoder[jsonName as String].value
             
             if value is NSError {continue}
-            if value is Array<AnyObject> {
+            if value is Array<Any> {
                 self.setValue([], forKey: propName as String)
-                let objectArray = self.mutableSetValueForKey(propName as String)
+                let objectArray = self.mutableSetValue(forKey: propName as String)
                 
                 if let array = decoder[propName as String].array {
                     for elem in array {
-                        if elem.value != nil {objectArray.addObject(elem.value!)}
+                        if elem.value != nil {objectArray.add(elem.value!)}
                     }
                 }
             } else {
                 self.setValue(value, forKey: propName as String)
             }
         }
-        propertiesInAClass.dealloc(Int(propertiesCount))
+        propertiesInAClass.deallocate(capacity: Int(propertiesCount))
         self.JSONCompletion(decoder)
         return self
     }
     
-    public func toDictionary() -> NSDictionary {
-        self.registeredVars.removeAll(keepCapacity: false)
+    open func toDictionary() -> NSDictionary {
+        self.registeredVars.removeAll(keepingCapacity: false)
         self.registerVariables()
-        let aClass : AnyClass? = self.dynamicType
+        let aClass : AnyClass? = type(of: self)
         var propertiesCount : CUnsignedInt = 0
-        let propertiesInAClass : UnsafeMutablePointer<objc_property_t> = class_copyPropertyList(aClass, &propertiesCount)
+        let propertiesInAClass : UnsafeMutablePointer<objc_property_t?> = class_copyPropertyList(aClass, &propertiesCount)
         let propertiesDictionary : NSMutableDictionary = NSMutableDictionary()
         for i in 0 ..< Int(propertiesCount) {
             let property = propertiesInAClass[i]
-            var propName = NSString(CString: property_getName(property), encoding: NSUTF8StringEncoding)!
-            let propValue:AnyObject! = self.valueForKey(propName as String)
+            var propName = NSString(cString: property_getName(property), encoding: String.Encoding.utf8.rawValue)!
+            let propValue:AnyObject! = self.value(forKey: propName as String) as AnyObject!
             
             for variable in self.registeredVars {
-                if variable.0 == propName {
-                    propName = variable.1
+                if variable.0 == propName as String {
+                    propName = variable.1 as NSString
                     break
                 }
             }
@@ -296,16 +316,16 @@ public class JSONDecoder {
                 propertiesDictionary.setValue(propValue, forKey: propName as String)
             }
         }
-        propertiesInAClass.dealloc(Int(propertiesCount))
+        propertiesInAClass.deallocate(capacity: Int(propertiesCount))
         return propertiesDictionary
     }
     
-    public func JSONData() -> NSData! {
+    open func JSONData() -> Data! {
         let dictionary = self.toDictionary()
-        return try! NSJSONSerialization.dataWithJSONObject(dictionary, options:NSJSONWritingOptions(rawValue: 0))
+        return try! JSONSerialization.data(withJSONObject: dictionary, options:JSONSerialization.WritingOptions(rawValue: 0))
     }
     
-    public func JSONString() -> NSString! {
-        return NSString(data: self.JSONData(), encoding: NSUTF8StringEncoding)
+    open func JSONString() -> NSString! {
+        return NSString(data: self.JSONData(), encoding: String.Encoding.utf8.rawValue)
     }
 }
